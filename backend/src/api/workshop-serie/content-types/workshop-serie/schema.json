@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "workshop_series",
+  "info": {
+    "singularName": "workshop-serie",
+    "pluralName": "workshop-series",
+    "displayName": "Workshop Serie",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "evaluation_steps": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::evaluation-step.evaluation-step"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::project.project",
+      "inversedBy": "workshop_series"
+    },
+    "workshops": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::workshop.workshop",
+      "mappedBy": "workshop_serie"
+    }
+  }
+}

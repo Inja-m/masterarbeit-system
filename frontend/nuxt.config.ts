@@ -4,15 +4,17 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxt/icon',
-    '@nuxt/image',
-    '@nuxt/scripts',
-    '@nuxt/test-utils',
-    '@nuxt/ui',
-		'@vite-pwa/nuxt'
+   '@nuxt/content',
+   '@nuxt/eslint',
+   '@nuxt/fonts',
+   '@nuxt/icon',
+   '@nuxt/image',
+   '@nuxt/scripts',
+   '@nuxt/test-utils',
+   '@nuxt/ui',
+   '@vite-pwa/nuxt',
+   '@nuxtjs/strapi',
+	 '@nuxtjs/strapi'
   ],
-	css: ['~/assets/css/main.css']
+  css: ['~/assets/css/main.css']
 })

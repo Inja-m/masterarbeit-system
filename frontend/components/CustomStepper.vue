@@ -23,7 +23,7 @@
 									: ''
 							]"
 						>
-							<component :is="step.icon" class="w-4 h-4 md:w-6 md:h-6" stroke-width="2" />
+						<component :is="getIconComponent(step.icon)" class="w-4 h-4 md:w-6 md:h-6" stroke-width="2" />
 						</div>
 					</div>
 
@@ -39,17 +39,23 @@
 
     <!-- Content -->
     <div class="bg-elevated rounded-lg p-4">
-      <div class="font-medium mb-2">{{ steps[activeStep].title }}</div>
-      <slot :name="steps[activeStep].slot" />
+      <div class="font-medium mb-2">{{ steps[activeStep].name }}</div>
+      <p> {{ steps[activeStep].description }}</p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import * as LucideIcons from 'lucide-vue-next'
+
 const props = defineProps<{
-  steps: { title: string; slot: string; icon: any }[]
+  steps: { name: string; description: string; icon: string }[]
   completedStep: number
 }>()
+
+function getIconComponent(component: string) {
+  return LucideIcons[component as keyof typeof LucideIcons] || LucideIcons.HelpCircle
+}
 
 const activeStep = ref(0)
 

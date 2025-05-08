@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "evaluation_steps",
+  "info": {
+    "singularName": "evaluation-step",
+    "pluralName": "evaluation-steps",
+    "displayName": "Evaluation Step",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "icon": {
+      "type": "string"
+    }
+  }
+}

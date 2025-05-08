@@ -1,32 +1,29 @@
 <template>
 	<UBadge size="sm" color="warning">Projekt Name</UBadge>
 	<div class="font-medium text-lg md:text-xl my-2 md:my-4">
-		Workshop Name
+		{{resWorkshop.data.workshop_serie.name}}
 	</div>
 	<p>
-    <span v-if="isExpanded">{{ fullDescription}}</span>
-    <span v-if="!isExpanded">{{ fullDescription.slice(0, 50) }}...</span>
+    <span v-if="isExpanded">{{ resWorkshop.data.workshop_serie.description}}</span>
+    <span v-if="!isExpanded">{{ resWorkshop.data.workshop_serie.description.slice(0, 50) }}...</span>
 		<UButton @click="toggleDescription" size="xs" color="info" variant="link">{{ isExpanded ? 'Weniger' : 'Mehr' }}</UButton>
   </p>
 	<IconText :icon="Calendar" text="18.04.2024" />
-	<IconText :icon="MapPin" text="Universität zu Lübeck" />
-	<IconText :icon="HandCoins" text="2 VP Stunden" />
+	<IconText :icon="MapPin" :text=resWorkshop.data.location />
+	<div v-if=resWorkshop.data.reward>
+		<IconText :icon="HandCoins" :text=resWorkshop.data.reward />
+	</div>
+	<!--{{ resWorkshop.data.workshop_serie.evaluation_steps }}-->
+	<!--<div v-for="evaluationSteps in resWorkshop.data.workshop_serie.evaluation_steps" :key="evaluationSteps.id">
+  <h2>{{ evaluationSteps.name }}</h2>
+</div>-->
 
 	<div class="my-4 mx-2 ">
 		<CustomStepper
-		:steps="stepItems"
+		:steps="resWorkshop.data.workshop_serie.evaluation_steps"
 		:activeStep="currentStep"
 		:completedStep="1"
 	>
-		<template #step1>
-			<p>Inhalt für Schritt 1</p>
-		</template>
-		<template #step2>
-			<p>Inhalt für Schritt 2</p>
-		</template>
-		<template #step3>
-			<p>Inhalt für Schritt 3</p>
-		</template>
 	</CustomStepper>
 </div>
 
@@ -34,8 +31,19 @@
 
 <script setup lang="ts">
 import { Home, Truck, CreditCard, Calendar, MapPin, HandCoins } from 'lucide-vue-next'
+import type { Workshop } from '../types/Workshop'
+//import type { WorkshopSerie } from '~/types/WorkshopSerie'
 
-const fullDescription = 'Hier steht ein kurzer Beschreibungstext zu diesem Workshop, der geht noch weiter.';
+const { find, findOne } = useStrapi()
+
+const workshopID = 'nw7fo74q6yv78o8euq8xw5x7'
+
+const resWorkshop = await findOne<Workshop>('workshops', workshopID, {populate:{workshop_serie: {populate: '*'}}})
+
+//const serie = await findOne<WorkshopSerie>('workshop-series', {populate: ['workshops']})
+
+//const steps = await find('evaluation-steps')
+
 const isExpanded = ref(false);
 
 function toggleDescription() {

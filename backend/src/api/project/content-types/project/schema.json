@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "projects",
+  "info": {
+    "singularName": "project",
+    "pluralName": "projects",
+    "displayName": "Project"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "workshop_series": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::workshop-serie.workshop-serie",
+      "mappedBy": "project"
+    }
+  }
+}
