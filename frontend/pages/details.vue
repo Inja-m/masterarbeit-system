@@ -1,5 +1,5 @@
 <template>
-	<UBadge size="sm" color="warning">Projekt Name</UBadge>
+	<UBadge size="sm" color="warning">{{resWorkshop.data.workshop_serie.project.name}}</UBadge>
 	<div class="font-medium text-lg md:text-xl my-2 md:my-4">
 		{{resWorkshop.data.workshop_serie.name}}
 	</div>
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { Home, Truck, CreditCard, Calendar, MapPin, HandCoins } from 'lucide-vue-next'
+import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
 import type { Workshop } from '../types/Workshop'
 //import type { WorkshopSerie } from '~/types/WorkshopSerie'
 
@@ -51,13 +51,5 @@ function toggleDescription() {
 }
 
 const currentStep = ref(0)
-const stepItems = [
-  { title: 'Adresse', slot: 'step1', icon: Home },
-  { title: 'Versand', slot: 'step2', icon: Truck },
-  { title: 'Zahlung', slot: 'step3', icon: CreditCard },
-	{ title: 'Adresse', slot: 'step1', icon: Home },
-  { title: 'Versand', slot: 'step2', icon: Truck },
-  { title: 'Zahlung', slot: 'step3', icon: CreditCard }
-]
 
 </script>
