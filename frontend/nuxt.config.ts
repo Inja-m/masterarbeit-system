@@ -16,5 +16,8 @@ export default defineNuxtConfig({
    '@nuxtjs/strapi',
 	 '@nuxtjs/strapi'
   ],
-  css: ['~/assets/css/main.css']
+  css: ['~/assets/css/main.css'],
+	imports: {
+    dirs: ['utils']
+  },
 })

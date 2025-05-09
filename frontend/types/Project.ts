@@ -1,10 +1,10 @@
-export interface EvaluationStep {
+import type { Workshop } from "./Workshop"
+export interface Project {
   id: number
   documentId: string
   name: string
-  description: string
-  icon: string
   createdAt: string
   updatedAt: string
   publishedAt: string
+	workshops: Workshop[]
 }

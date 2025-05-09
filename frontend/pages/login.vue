@@ -67,15 +67,14 @@
 
 <script setup lang="ts">
 import * as v from 'valibot'
-import type { FormSubmitEvent } from '@nuxt/ui'
+
 const show = ref(false)
 
 const schema = v.object({
   email: v.pipe(v.string(), v.email('Invalid email')),
-  password: v.pipe(v.string(), v.minLength(8, 'Must be at least 8 characters'))
+  password: v.pipe(v.string(), v.minLength(6, 'Must be at least 8 characters'))
 })
 
-type Schema = v.InferOutput<typeof schema>
 
 const state = reactive({
   email: '',

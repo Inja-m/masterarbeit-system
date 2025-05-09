@@ -8,7 +8,7 @@
     <span v-if="!isExpanded">{{ resWorkshop.data.workshop_serie.description.slice(0, 50) }}...</span>
 		<UButton @click="toggleDescription" size="xs" color="info" variant="link">{{ isExpanded ? 'Weniger' : 'Mehr' }}</UButton>
   </p>
-	<IconText :icon="Calendar" text="18.04.2024" />
+	<IconText :icon="Calendar" :text="formatDate(resWorkshop.data.date)" />
 	<IconText :icon="MapPin" :text=resWorkshop.data.location />
 	<div v-if=resWorkshop.data.reward>
 		<IconText :icon="HandCoins" :text=resWorkshop.data.reward />
@@ -31,12 +31,13 @@
 
 <script setup lang="ts">
 import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
-import type { Workshop } from '../types/Workshop'
+import type { Workshop } from '../../types/Workshop'
 //import type { WorkshopSerie } from '~/types/WorkshopSerie'
 
-const { find, findOne } = useStrapi()
+const { findOne } = useStrapi()
 
-const workshopID = 'nw7fo74q6yv78o8euq8xw5x7'
+const route = useRoute()
+const workshopID = route.params.id as string
 
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {populate:{workshop_serie: {populate: '*'}}})
 

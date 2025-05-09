@@ -1,6 +1,6 @@
 import type { Workshop } from "./Workshop"
 import type { EvaluationStep } from "./EvaluationStep"
-
+import type { Project } from "./Project"
 export interface WorkshopSerie {
   id: number
   documentId: string
@@ -11,4 +11,5 @@ export interface WorkshopSerie {
   publishedAt: string
 	workshops: Workshop[]
 	evaluation_steps: EvaluationStep[]
+	project: Project[]
 }

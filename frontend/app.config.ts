@@ -11,6 +11,15 @@ export default defineAppConfig({
 					} 
 				}
 			}
+		},
+		card: {
+			variants: {
+				variant: {
+				soft: {
+					root: 'bg-accented'
+				},
+			}
+			}
 		}
 	}
 })

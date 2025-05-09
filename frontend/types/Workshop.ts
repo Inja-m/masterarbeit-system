@@ -9,5 +9,5 @@ export interface Workshop {
   createdAt: string
   updatedAt: string
   publishedAt: string
-	workshop_serie: WorkshopSerie;
+	workshop_serie: WorkshopSerie
 }
