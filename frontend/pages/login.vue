@@ -91,7 +91,7 @@ const onSubmit = async () => {
 		
     console.log('Login erfolgreich:', response)
 
-    router.push('/details')
+    router.push('/')
   } catch (e) {console.error('Fehler beim Login oder Routing:', e)}
 }
 </script>
