@@ -32,6 +32,16 @@
 <script setup lang="ts">
 import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
 import type { Workshop } from '../../types/Workshop'
+
+definePageMeta({
+	name:'details',
+  header: {
+    title: 'Details',
+    back: '/',
+    showMenu: true,
+		showHeader:true
+  }
+})
 //import type { WorkshopSerie } from '~/types/WorkshopSerie'
 
 const { findOne } = useStrapi()

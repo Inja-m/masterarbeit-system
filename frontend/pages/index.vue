@@ -26,6 +26,10 @@
 import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
 import type { Workshop } from '../types/Workshop'
 
+definePageMeta({
+	name:'home',
+})
+
 const { find } = useStrapi()
 
 const workshops = await find<Workshop>('workshops', {
