@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 
-const props = defineProps<{
+defineProps<{
   icon: Component
   text: string
 }>()

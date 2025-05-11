@@ -401,6 +401,43 @@ export interface ApiEvaluationStepEvaluationStep
   };
 }
 
+export interface ApiParticipationParticipation
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'participations';
+  info: {
+    description: '';
+    displayName: 'Participation';
+    pluralName: 'participations';
+    singularName: 'participation';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::participation.participation'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    workshop_group: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::workshop-group.workshop-group'
+    >;
+  };
+}
+
 export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   collectionName: 'projects';
   info: {
@@ -430,6 +467,38 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::workshop-serie.workshop-serie'
     >;
+  };
+}
+
+export interface ApiWorkshopGroupWorkshopGroup
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'workshop_groups';
+  info: {
+    description: '';
+    displayName: 'Workshop Group';
+    pluralName: 'workshop-groups';
+    singularName: 'workshop-group';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-group.workshop-group'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    numberParticipants: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
   };
 }
 
@@ -486,6 +555,7 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     date: Schema.Attribute.DateTime;
+    identifier: Schema.Attribute.UID;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -498,6 +568,10 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    workshop_groups: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-group.workshop-group'
+    >;
     workshop_serie: Schema.Attribute.Relation<
       'manyToOne',
       'api::workshop-serie.workshop-serie'
@@ -960,7 +1034,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -1015,7 +1088,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
+      'api::participation.participation': ApiParticipationParticipation;
       'api::project.project': ApiProjectProject;
+      'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
       'api::workshop-serie.workshop-serie': ApiWorkshopSerieWorkshopSerie;
       'api::workshop.workshop': ApiWorkshopWorkshop;
       'plugin::content-releases.release': PluginContentReleasesRelease;

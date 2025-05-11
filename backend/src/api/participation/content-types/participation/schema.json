@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "participations",
+  "info": {
+    "singularName": "participation",
+    "pluralName": "participations",
+    "displayName": "Participation",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "workshop_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::workshop-group.workshop-group"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

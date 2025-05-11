@@ -1,5 +1,5 @@
 import type { WorkshopSerie } from "./WorkshopSerie"
-
+import type { WorkshopGroup } from "./WorkshopGroup"
 export interface Workshop {
   id: number
   documentId: string
@@ -10,4 +10,6 @@ export interface Workshop {
   updatedAt: string
   publishedAt: string
 	workshop_serie: WorkshopSerie
+	workshop_groups:  WorkshopGroup[]
+	identifier: string
 }

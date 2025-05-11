@@ -8,7 +8,4 @@
 
 <script setup lang="ts">
 
-useHead({
-  title: 'Masterarbeit'
-})
 </script>

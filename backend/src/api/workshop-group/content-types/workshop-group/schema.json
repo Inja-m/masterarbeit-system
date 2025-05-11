@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "workshop_groups",
+  "info": {
+    "singularName": "workshop-group",
+    "pluralName": "workshop-groups",
+    "displayName": "Workshop Group",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "numberParticipants": {
+      "type": "integer"
+    },
+		"workshop": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::workshop.workshop",
+      "inversedBy": "workshop_groups"
+    }
+  }
+}

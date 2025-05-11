@@ -62,5 +62,4 @@ function toggleDescription() {
 }
 
 const currentStep = ref(0)
-
 </script>
