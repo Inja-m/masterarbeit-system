@@ -1,20 +1,28 @@
 <template>
-  <UModal title="Workshop hinzufügen" close-icon="i-lucide-x">
-		<UButton label="Hinzufügen" color="neutral" variant="subtle" />
-		<template #body>
-      <UInput v-model="identifier" placeholder="Workshop-Identifier" />
-
-      <UButton @click="loadWorkshopGroups" class="mt-2">Workshop prüfen</UButton>
-			
-      <div v-if="groups.length > 0" class="mt-4">
-        <USelect
-          :items="groups.map(g => ({ label: g.name, value: g.documentId }))"
-          placeholder="Gruppe auswählen"
-					v-model="selectedGroupId"
+  <UModal  :close="{ onClick: () => emit('close', false) }" :dismissible="false"  title="Workshop hinzufügen" close-icon="i-lucide-x">
+    <template #body>
+      <UForm
+        :validate="validate"
+        :state="state"
+        class="space-y-4"
+        @submit="onSubmit"
+        @error="onError"
+      >
+        <UFormField  label="Workshop-Identifier" name="identifier"  @input="() => validate(state)">
+          <UInput v-model="state.identifier" class="w-full" />
+        </UFormField>
+				<UFormField v-if="groups.length > 1" label="Gruppen Auswahl" name="groupID">
+					<USelect
+					v-model="state.groupId"
+          :items="groups.map((g) => ({ label: g.name, value: g.documentId }))"
+          placeholder="auswählen..."
+					class="w-full"
         />
-      </div>
-      <UButton :disabled="!selectedGroupId" @click="confirm">Teilnehmen</UButton>
-	</template>
+				</UFormField>
+        <UButton :disabled="!isFormValid" type="submit"> Hinzufügen </UButton>
+
+      </UForm>
+    </template>
   </UModal>
 </template>
 
@@ -22,45 +30,93 @@
 import type { Workshop } from '../types/Workshop'
 import type { WorkshopGroup } from '../types/WorkshopGroup'
 
-const identifier = ref('')
-const groups = ref<WorkshopGroup[]>([])
-const selectedGroupId = ref<number | null>(null)
+import type { FormError, FormErrorEvent, FormSubmitEvent } from '@nuxt/ui'
 
 const { find, create } = useStrapi()
 const { fetchUser } = useStrapiAuth()
+const emit = defineEmits<{ close: [boolean] }>()
+
+const groups = ref<WorkshopGroup[]>([])
+
+const state = reactive({
+  identifier: '',
+  groupId: ''
+})
+
+const isFormValid = computed(() => {
+  return !!state.identifier && !!state.groupId
+})
+
+const validate = async (state: any): Promise<FormError[]> => {
+  const errors = []	
+	const exists = await doesIdentifierExist(state.identifier)
+  if (!state.identifier) {
+		errors.push({ name: 'identifier', message: 'Erforderlich' })
+	} else if (!exists) {
+		errors.push({ name: 'identifier', message: 'Nicht Valide' })
+		if(state.groupId){
+			state.groupId = ''
+			groups.value = []
+		}
+	} 
+	if (exists && !state.groupId) loadWorkshopGroups()
+  if (!state.groupId) errors.push({ name: 'groupId', message: 'Erforderlich' })
+
+  return errors
+}
+
+async function onError(event: FormErrorEvent) {
+  if (event?.errors?.[0]?.id) {
+		console.log('Error')
+    const element = document.getElementById(event.errors[0].id)
+    element?.focus()
+    element?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+  }
+}
+
+async function onSubmit(event: FormSubmitEvent<typeof state>) {
+	try {
+    const user = await fetchUser()
+    await create('participations', {
+      user: user.value.id,
+      workshop_group: state.groupId
+    })
+		emit('close', true)
+  } catch (error: any) {
+    console.error(
+      'Fehler beim Erstellen der Participation:',
+      JSON.stringify(error, null, 2)
+    )
+  }
+}
+
+const doesIdentifierExist = async (identifier: string): Promise<boolean> => {
+  if (!identifier) return false
+
+	const res = await find<Workshop>('workshops', {
+    filters: {
+      identifier: state.identifier
+    },
+    populate: { workshop_groups: { populate: '*' } }
+  })
+
+  return res.data.length > 0
+}
 
 const loadWorkshopGroups = async () => {
-	console.log(identifier.value)
   const res = await find<Workshop>('workshops', {
     filters: {
-      identifier: identifier.value,
+      identifier: state.identifier
     },
-    populate: {workshop_groups: {populate: '*'}},
+    populate: { workshop_groups: { populate: '*' } }
   })
-	console.log(res)
   const workshop = res.data?.[0]
-  if (!workshop) {
-    alert('Workshop nicht gefunden')
-    return
-  }
 
   groups.value = workshop.workshop_groups
-	console.log(workshop)
-	console.log(groups)
-}
 
-const confirm = async () => {
-	try {
-  const user = await fetchUser()
-	console.log(user.value.id)
-	console.log(selectedGroupId.value)
-		await create('participations', {
-			user: user.value.id,
-			workshop_group: selectedGroupId.value
-		})
-  alert('Teilnahme erfolgreich!')
-  } catch (error: any) {
-		console.error('Fehler beim Erstellen der Participation:', JSON.stringify(error, null, 2))
+	if (groups.value.length === 1) {
+    state.groupId = groups.value[0].documentId
   }
 }
+
 </script>
