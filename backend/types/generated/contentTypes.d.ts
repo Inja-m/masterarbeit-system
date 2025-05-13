@@ -502,6 +502,49 @@ export interface ApiWorkshopGroupWorkshopGroup
   };
 }
 
+export interface ApiWorkshopResultWorkshopResult
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'workshop_results';
+  info: {
+    description: '';
+    displayName: 'Workshop Result';
+    pluralName: 'workshop-results';
+    singularName: 'workshop-result';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    evaluation_step: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::evaluation-step.evaluation-step'
+    >;
+    evaluationStatus: Schema.Attribute.Enumeration<
+      ['to do', 'in progress', 'done']
+    > &
+      Schema.Attribute.DefaultTo<'to do'>;
+    evaluator: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-result.workshop-result'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Result: Schema.Attribute.DynamicZone<['media.totality']>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
+  };
+}
+
 export interface ApiWorkshopSerieWorkshopSerie
   extends Struct.CollectionTypeSchema {
   collectionName: 'workshop_series';
@@ -571,6 +614,10 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
     workshop_groups: Schema.Attribute.Relation<
       'oneToMany',
       'api::workshop-group.workshop-group'
+    >;
+    workshop_results: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-result.workshop-result'
     >;
     workshop_serie: Schema.Attribute.Relation<
       'manyToOne',
@@ -1091,6 +1138,7 @@ declare module '@strapi/strapi' {
       'api::participation.participation': ApiParticipationParticipation;
       'api::project.project': ApiProjectProject;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
+      'api::workshop-result.workshop-result': ApiWorkshopResultWorkshopResult;
       'api::workshop-serie.workshop-serie': ApiWorkshopSerieWorkshopSerie;
       'api::workshop.workshop': ApiWorkshopWorkshop;
       'plugin::content-releases.release': PluginContentReleasesRelease;

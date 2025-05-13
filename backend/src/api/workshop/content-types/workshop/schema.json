@@ -23,7 +23,7 @@
       "target": "api::workshop-serie.workshop-serie",
       "inversedBy": "workshops"
     },
-		"workshop_groups": {
+    "workshop_groups": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::workshop-group.workshop-group",
@@ -34,6 +34,12 @@
     },
     "identifier": {
       "type": "uid"
+    },
+    "workshop_results": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::workshop-result.workshop-result",
+      "mappedBy": "workshop"
     }
   }
 }

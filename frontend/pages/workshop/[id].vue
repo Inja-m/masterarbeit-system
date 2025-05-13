@@ -22,7 +22,7 @@
 		<CustomStepper
 		:steps="resWorkshop.data.workshop_serie.evaluation_steps"
 		:activeStep="currentStep"
-		:completedStep="1"
+		:completedStep="completedStep"
 	>
 	</CustomStepper>
 </div>
@@ -32,6 +32,8 @@
 <script setup lang="ts">
 import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
 import type { Workshop } from '../../types/Workshop'
+import type { WorkshopResult } from '~/types/WorkshopResult'
+import type { progress } from '#build/ui'
 
 definePageMeta({
 	name:'details',
@@ -44,13 +46,41 @@ definePageMeta({
 })
 //import type { WorkshopSerie } from '~/types/WorkshopSerie'
 
-const { findOne } = useStrapi()
+const { findOne, find } = useStrapi()
 
 const route = useRoute()
 const workshopID = route.params.id as string
 
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {populate:{workshop_serie: {populate: '*'}}})
+const resWorkshopResults = await find<WorkshopResult>('workshop-results', {
+	filters: {
+		workshop: {
+      id: {
+        $eq: resWorkshop.data.id
+      }
+    }
+	},
+	populate: ['evaluation_step']
+})
 
+const stepsWithStatus = computed(() => {
+	return resWorkshop.data.workshop_serie.evaluation_steps.map((step: any) => {
+    const result = resWorkshopResults.data.find((r: any) => r.evaluation_step.id === step.id)
+    return {
+      ...step,
+      evaluationStatus: result?.evaluationStatus || 'todo' // fallback falls kein Ergebnis
+    }
+  })
+})
+
+const orderedSteps = computed(() => {
+  const order = { done: 0, inProgress: 1, todo: 2 }
+  return [...stepsWithStatus.value].sort((a, b) => order[a.evaluationStatus] - order[b.evaluationStatus])
+})
+
+const completedStep = computed(() =>
+  orderedSteps.value.findLastIndex((step: any) => step.evaluationStatus === 'done')
+)
 //const serie = await findOne<WorkshopSerie>('workshop-series', {populate: ['workshops']})
 
 //const steps = await find('evaluation-steps')

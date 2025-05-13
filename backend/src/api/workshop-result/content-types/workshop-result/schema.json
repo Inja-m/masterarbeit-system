@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "workshop_results",
+  "info": {
+    "singularName": "workshop-result",
+    "pluralName": "workshop-results",
+    "displayName": "Workshop Result",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "evaluator": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "evaluationStatus": {
+      "type": "enumeration",
+      "enum": [
+        "to do",
+        "in progress",
+        "done"
+      ],
+      "default": "to do"
+    },
+    "evaluation_step": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::evaluation-step.evaluation-step"
+    },
+    "Result": {
+      "type": "dynamiczone",
+      "components": [
+        "media.totality"
+      ]
+    },
+    "workshop": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::workshop.workshop",
+      "inversedBy": "workshop_results"
+    }
+  }
+}

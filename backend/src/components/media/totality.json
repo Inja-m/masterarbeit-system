@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_media_images",
+  "info": {
+    "displayName": "Totality",
+    "icon": "bulletList",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "workshop_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::workshop-group.workshop-group"
+    },
+    "Pictures": {
+      "type": "component",
+      "repeatable": true,
+      "component": "media.pictures"
+    },
+    "Text": {
+      "displayName": "Text",
+      "type": "component",
+      "repeatable": true,
+      "component": "media.text"
+    }
+  }
+}
