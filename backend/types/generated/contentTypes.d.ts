@@ -401,6 +401,39 @@ export interface ApiEvaluationStepEvaluationStep
   };
 }
 
+export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
+  collectionName: 'messages';
+  info: {
+    displayName: 'Message';
+    pluralName: 'messages';
+    singularName: 'message';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    author: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::message.message'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.Text;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop: Schema.Attribute.Relation<'oneToOne', 'api::workshop.workshop'>;
+  };
+}
+
 export interface ApiParticipationParticipation
   extends Struct.CollectionTypeSchema {
   collectionName: 'participations';
@@ -1135,6 +1168,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
+      'api::message.message': ApiMessageMessage;
       'api::participation.participation': ApiParticipationParticipation;
       'api::project.project': ApiProjectProject;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;

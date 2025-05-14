@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "messages",
+  "info": {
+    "singularName": "message",
+    "pluralName": "messages",
+    "displayName": "Message"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "author": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+		"workshop": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::workshop.workshop"
+    },
+    "message": {
+      "type": "text"
+    }
+  }
+}
