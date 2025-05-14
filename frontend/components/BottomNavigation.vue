@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="fixed bottom-0 left-0 right-0 z-50 border-t flex justify-around py-4 bg-accented"
+    class="border-t flex justify-around py-4 bg-accented"
   >
     <NuxtLink to="/" class="flex flex-col items-center text-sm">
       <Home :size=size :stroke-width="stroke" />

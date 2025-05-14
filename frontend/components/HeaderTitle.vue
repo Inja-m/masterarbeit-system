@@ -11,7 +11,7 @@
 <script setup lang="ts">
 defineProps<{
   title: string
-  showBack?: boolean
+  showBack?:string
   showMenu?: boolean
 }>()
 

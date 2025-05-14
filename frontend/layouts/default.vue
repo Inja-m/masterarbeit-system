@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col h-screen">
 		<HeaderTitle
       v-if="metaHeader.showHeader"
       :title="metaHeader.title"
@@ -7,7 +7,7 @@
       :show-menu="metaHeader.showMenu"
       @back="handleBack"
     />
-    <main class="flex-grow p-4 md:p-6 h-screen">
+    <main class="grow overflow-y-auto p-4 md:p-6">
       <slot />
     </main>
 		<BottomNavigation v-if="!isLoginPage" />
