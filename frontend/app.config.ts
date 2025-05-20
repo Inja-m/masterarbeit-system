@@ -20,6 +20,11 @@ export default defineAppConfig({
 				},
 			}
 			}
+		},
+		avatar: {
+			 slots: {
+        root:'bg-accented'
+			}
 		}
 	}
 })

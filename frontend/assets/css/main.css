@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+h1 {
+	@apply font-medium text-lg md:text-xl md:my-4;
+}
+h2{
+	@apply font-medium mb-2;
+}

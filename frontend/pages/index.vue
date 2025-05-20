@@ -1,15 +1,15 @@
 <template>
-  <!-- Button zum Hinzufügen eines Workshops -->
-  <div class="flex justify-end">
+	<Section>
+<div class="flex justify-end">
     <UButton label="Hinzufügen" color="neutral" variant="subtle" @click="open" />
   </div>
   <div v-for="workshop in userWorkshops" :key="workshop.id" class="mt-6">
     <NuxtLink :to="`/workshop/${workshop.documentId}`" class="block">
       <UCard variant="soft">
         <template #header>
-          <h2 class="text-lg font-semibold">
+          <h1>
             {{ workshop.workshop_serie.name }}
-          </h2>
+          </h1>
         </template>
         <UBadge size="sm" color="warning" class="mb-2">{{
           workshop.workshop_serie.project.name
@@ -23,6 +23,8 @@
       </UCard>
     </NuxtLink>
   </div>
+	</Section>
+  
 </template>
 
 <script setup lang="ts">

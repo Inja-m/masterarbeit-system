@@ -1,5 +1,6 @@
 <template>
-  <div
+	<Section>
+	<div
     class="flex items-center justify-center m-4"
   >
     <UCard class="w-full md:w-1/3" variant="soft">
@@ -61,8 +62,9 @@
         </p>
       </template>
     </UCard>
-  </div>
- 
+  </div>	
+	</Section>
+  
 </template>
 
 <script setup lang="ts">

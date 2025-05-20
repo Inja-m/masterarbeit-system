@@ -1,5 +1,6 @@
 <template>
-  <div class="profile-container">
+	<Section>
+		  <div class="profile-container">
     <div class="profile-header">
       <h1 class="text-center text-2xl font-semibold">Mein Profil</h1>
     </div>
@@ -9,6 +10,7 @@
 
 <UButton @click="handleLogout" trailing-icon="i-lucide-log-out" size="md">Ausloggen</UButton>
   </div>
+	</Section>
 </template>
 
 <script setup lang="ts">

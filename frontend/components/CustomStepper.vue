@@ -45,7 +45,7 @@
 
     <!-- Content -->
     <div class="bg-accented rounded-lg p-4">
-      <div class="font-medium mb-2">{{ steps[activeStep].name }}</div>
+      <h2>{{ steps[activeStep].name }}</h2>
       <p>{{ steps[activeStep].description }}</p>
     </div>
   </div>

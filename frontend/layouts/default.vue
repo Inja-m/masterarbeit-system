@@ -7,7 +7,7 @@
       :show-menu="metaHeader.showMenu"
       @back="handleBack"
     />
-    <main class="grow overflow-y-auto p-4 md:p-6">
+    <main class="grow overflow-y-auto">
       <slot />
     </main>
 		<BottomNavigation v-if="!isLoginPage" />

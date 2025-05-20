@@ -1,61 +1,72 @@
 <template>
-  <UBadge size="sm" color="warning">{{
-    resWorkshop.data.workshop_serie.project.name
-  }}</UBadge>
-  <div class="font-medium text-lg md:text-xl my-2 md:my-4">
-    {{ resWorkshop.data.workshop_serie.name }}
-  </div>
-  <p>
-    <span v-if="isExpanded">
-      {{ resWorkshop.data.workshop_serie.description }}
-    </span>
-    <span v-if="!isExpanded">
-      {{ resWorkshop.data.workshop_serie.description.slice(0, 50) }}...
-    </span>
-    <UButton @click="toggleDescription" size="xs" color="info" variant="link">
-      {{ isExpanded ? 'Weniger' : 'Mehr' }}
-    </UButton>
-  </p>
-  <IconText :icon="Calendar" :text="formatDate(resWorkshop.data.date)" />
-  <IconText :icon="MapPin" :text="resWorkshop.data.location" />
-  <div v-if="resWorkshop.data.reward">
-    <IconText :icon="HandCoins" :text="resWorkshop.data.reward" />
-  </div>
-
-  <div class="my-4 mx-2">
-    <CustomStepper
-      :steps="resWorkshop.data.workshop_serie.evaluation_steps"
-      :completed-step="completedStep"
-    />
-  </div>
-		<div class="font-medium text-lg md:text-xl my-2 md:my-4">
-    Wir freuen uns über einen weiteren Austausch
-  </div>
-  <div v-for="message in messages.data" :key="message.id">
-    <Message
-      :time="formatRelativeTime(message.createdAt)"
-      :name="message.author?.username || 'Anonym'"
-      :message="message.message"
-    />
-  </div>
-  <!-- Nachricht schreiben + Anonym senden -->
-
-  <UCheckbox
-    v-model="isAnonymous"
-    label="Nachricht anonym senden"
-    color="neutral"
-  />
-  <UInput v-model="newMessage" placeholder="Deine Nachricht..." color="neutral">
-    <template #trailing>
-      <UButton
-        icon="i-heroicons-paper-airplane"
-        color="neutral"
-        variant="link"
-        @click="sendMessage"
+  <Section>
+    <UBadge size="sm" color="warning">{{
+      resWorkshop.data.workshop_serie.project.name
+    }}</UBadge>
+    <h1 class="py-2">
+      {{ resWorkshop.data.workshop_serie.name }}
+    </h1>
+    <!--<p>
+      <span v-if="isExpanded">
+        {{ resWorkshop.data.workshop_serie.description }}
+      </span>
+      <span v-if="!isExpanded">
+        {{ resWorkshop.data.workshop_serie.description.slice(0, 50) }}...
+      </span>
+      <UButton @click="toggleDescription" size="xs" color="info" variant="link">
+        {{ isExpanded ? 'Weniger' : 'Mehr' }}
+      </UButton>
+    </p>-->
+    <IconText :icon="Calendar" :text="formatDate(resWorkshop.data.date)" />
+    <IconText :icon="MapPin" :text="resWorkshop.data.location" />
+    <div v-if="resWorkshop.data.reward">
+      <IconText :icon="HandCoins" :text="resWorkshop.data.reward" />
+    </div>
+    <UAccordion :items="items" />
+    <div class="my-4 mx-2">
+      <CustomStepper
+        :steps="resWorkshop.data.workshop_serie.evaluation_steps"
+        :completed-step="completedStep"
       />
-    </template>
-  </UInput>
-  
+    </div>
+  </Section>
+  <Section bg-color="bg-primary-100" class="light text-default">
+    <h1 class="pb-4">Wir freuen uns über einen weiteren Austausch</h1>
+    <UForm :state="state" class="pb-4" @submit="onSubmit">
+      <UFormField name="anonym">
+        <UCheckbox
+          v-model="state.anonym"
+          label="Nachricht anonym senden"
+          color="neutral"
+          class="pb-2"
+        />
+      </UFormField>
+      <UFormField name="message">
+        <UTextarea
+          v-model="state.message"
+          color="neutral"
+          placeholder="Deine Nachricht..."
+          class="w-full focus:bg-transparent"
+        >
+          <template #trailing>
+            <UButton
+              icon="i-heroicons-paper-airplane"
+              color="neutral"
+              variant="link"
+              type="submit"
+            />
+          </template>
+        </UTextarea>
+      </UFormField>
+    </UForm>
+    <div v-for="message in messages" :key="message.id">
+      <Message
+        :time="formatRelativeTime(message.createdAt)"
+        :name="message.author?.username || 'Anonym'"
+        :message="message.message"
+      />
+    </div>
+  </Section>
 </template>
 
 <script setup lang="ts">
@@ -74,20 +85,31 @@ definePageMeta({
   }
 })
 
-const { findOne, find } = useStrapi()
+const { findOne, find, create } = useStrapi()
 const route = useRoute()
 const workshopID = route.params.id as string
-const isExpanded = ref(false)
-const newMessage = ref('')
-const isAnonymous = ref(false)
+const messages = ref<Message[]>([])
 
-function toggleDescription() {
-  isExpanded.value = !isExpanded.value
-}
+const user = useStrapiUser()
+const state = reactive({
+  anonym: false,
+  message: undefined
+})
 
+onMounted(() => {
+  console.log('test')
+  loadMessages()
+})
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {
   populate: { workshop_serie: { populate: '*' } }
 })
+const items = ref<AccordionItem[]>([
+  {
+    label: 'Beschreibung',
+    icon: 'i-lucide-scroll-text',
+    content: resWorkshop.data.workshop_serie.description
+  }
+])
 const resWorkshopResults = await find<WorkshopResult>('workshop-results', {
   filters: {
     workshop: {
@@ -124,16 +146,25 @@ const completedStep = computed(() =>
   )
 )
 
-const messages = await find<Message>('messages', {
-  filters: {
-    workshop: {
-      id: {
-        $eq: resWorkshop.data.id
-      }
-    }
-  },
-  populate: ['author']
-})
+async function loadMessages() {
+  try {
+    const result = await find<Message>('messages', {
+      filters: {
+        workshop: {
+          id: {
+            $eq: resWorkshop.data.id
+          }
+        }
+      },
+      populate: ['author'],
+      sort: ['createdAt:desc']
+    })
+
+    messages.value = result.data
+  } catch (error) {
+    console.error('Fehler beim Laden der Nachrichten:', error)
+  }
+}
 
 function formatRelativeTime(dateString: string): string {
   const now = new Date()
@@ -147,7 +178,7 @@ function formatRelativeTime(dateString: string): string {
   if (seconds < 86400) return `vor ${Math.floor(seconds / 3600)} Std.`
 
   if (daysDiff < 7) {
-    return `${daysDiff === 1 ? 'Gestern' : 'vor ${daysDiff} Tagen'}`
+    return `${daysDiff === 1 ? 'Gestern' : `vor ${daysDiff} Tagen`}`
   }
 
   const weeks = Math.floor(daysDiff / 7)
@@ -164,22 +195,19 @@ function formatRelativeTime(dateString: string): string {
   return `${years === 1 ? 'letztes Jahr' : 'vor ${years} Jahren'}`
 }
 
-async function sendMessage() {
+async function onSubmit(event: FormSubmitEvent<typeof state>) {
   try {
-    const { create } = useStrapi()
     const message: any = {
-      message: newMessage.value,
+      message: state.message,
       workshop: resWorkshop.data.documentId
     }
-    // Nur anhängen, wenn nicht anonym
-    if (!isAnonymous.value) {
-      const user = useStrapiUser()
+    if (!state.anonym) {
       message.author = user.value?.id
     }
     await create('messages', message)
-
-    newMessage.value = ''
-    isAnonymous.value = false
+    state.anonym = false
+    state.message = undefined
+    await loadMessages()
   } catch (err) {
     console.error('Fehler beim Senden:', err)
   }
