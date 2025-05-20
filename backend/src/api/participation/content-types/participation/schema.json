@@ -20,6 +20,15 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "notification": {
+      "type": "enumeration",
+      "enum": [
+        "all",
+        "relevant",
+        "off"
+      ],
+      "default": "all"
     }
   }
 }

@@ -1,22 +1,14 @@
 <template>
   <Section>
-    <UBadge size="sm" color="warning">{{
-      resWorkshop.data.workshop_serie.project.name
-    }}</UBadge>
+		<div class="flex items-center justify-between">
+    	<UBadge size="sm" color="warning">{{
+      	resWorkshop.data.workshop_serie.project.name
+    	}}</UBadge>
+		  <NotificationSetting :title="`Mitteilungen zu „${resWorkshop.data.workshop_serie.name}“ verwalten`"/>
+		 </div>
     <h1 class="py-2">
       {{ resWorkshop.data.workshop_serie.name }}
     </h1>
-    <!--<p>
-      <span v-if="isExpanded">
-        {{ resWorkshop.data.workshop_serie.description }}
-      </span>
-      <span v-if="!isExpanded">
-        {{ resWorkshop.data.workshop_serie.description.slice(0, 50) }}...
-      </span>
-      <UButton @click="toggleDescription" size="xs" color="info" variant="link">
-        {{ isExpanded ? 'Weniger' : 'Mehr' }}
-      </UButton>
-    </p>-->
     <IconText :icon="Calendar" :text="formatDate(resWorkshop.data.date)" />
     <IconText :icon="MapPin" :text="resWorkshop.data.location" />
     <div v-if="resWorkshop.data.reward">
@@ -70,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
+import { Calendar, MapPin, HandCoins} from 'lucide-vue-next'
 import type { Workshop } from '../../types/Workshop'
 import type { WorkshopResult } from '~/types/WorkshopResult'
 import type { Message } from '~/types/Message'
