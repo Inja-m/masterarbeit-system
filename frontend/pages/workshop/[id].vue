@@ -1,7 +1,7 @@
 <template>
   <Section>
 		<div class="flex items-center justify-between">
-    	<UBadge size="sm" color="warning">{{
+    	<UBadge size="sm" :style="{ backgroundColor: resWorkshop.data.workshop_serie.project.color}">{{
       	resWorkshop.data.workshop_serie.project.name
     	}}</UBadge>
 		  <NotificationSetting :title="`Mitteilungen zu „${resWorkshop.data.workshop_serie.name}“ verwalten`"/>

@@ -11,7 +11,7 @@
             {{ workshop.workshop_serie.name }}
           </h1>
         </template>
-        <UBadge size="sm" color="warning" class="mb-2">{{
+        <UBadge size="sm" :style="{ backgroundColor: workshop.workshop_serie.project.color}" class="mb-2" >{{
           workshop.workshop_serie.project.name
         }}</UBadge>
         <IconText :icon="Calendar" :text="formatDate(workshop.date)" />
