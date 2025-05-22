@@ -68,13 +68,12 @@ import type { WorkshopResult } from '~/types/WorkshopResult'
 import type { Message } from '~/types/Message'
 
 definePageMeta({
-  name: 'details',
+  name: 'workshop-details',
   header: {
     title: 'Details',
     back: '/',
-    showMenu: true,
     showHeader: true
-  }
+  }	
 })
 
 const { findOne, find, create } = useStrapi()
@@ -89,8 +88,8 @@ const state = reactive({
 })
 
 onMounted(() => {
-  console.log('test')
   loadMessages()
+	console.log(workshopID)
 })
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {
   populate: { workshop_serie: { populate: '*' } }

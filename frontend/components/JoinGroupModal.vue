@@ -74,7 +74,7 @@ async function onError(event: FormErrorEvent) {
   }
 }
 
-async function onSubmit(event: FormSubmitEvent<typeof state>) {
+async function onSubmit(_event: FormSubmitEvent<typeof state>) {
 	try {
     const user = await fetchUser()
     await create('participations', {

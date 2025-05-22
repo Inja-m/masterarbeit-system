@@ -36,27 +36,9 @@ const props = defineProps<{
 const strapi = useStrapi()
 const user = useStrapiUser()
 
-const value = ref<'all' | 'relevant' | 'off'>('off')
+const value = ref<'all' | 'relevant' | 'off'>()
 const participationId = ref<number | null>(null)
 
-// Dein Radio-Items
-const items = [
-  { label: 'Alle', value: 'all', icon: Bell },
-  {
-    label: 'Relevantesten',
-    description: 'Nur Benachrichtigungen zum Fortschritt.',
-    value: 'relevant',
-    icon: BellRing,
-  },
-  { label: 'Aus', value: 'off', icon: BellOff },
-]
-
-// Icon abhängig vom Wert
-const currentIcon = computed(() => {
-  return items.find((i) => i.value === value.value)?.icon || BellOff
-})
-
-// Teilnahme-Daten laden (pro User + Workshop)
 onMounted(async () => {
   const res = await strapi.find<Participation>('participations', {
     filters: {
@@ -71,11 +53,26 @@ onMounted(async () => {
     value.value = participation.notification
   }
 })
+// Dein Radio-Items
+const items = [
+  { label: 'Alle', value: 'all', icon: Bell },
+  {
+    label: 'Relevantesten',
+    description: 'Nur Benachrichtigungen zum Fortschritt.',
+    value: 'relevant',
+    icon: BellRing,
+  },
+  { label: 'Aus', value: 'off', icon: BellOff },
+]
+
+// Icon abhängig vom Wert
+const currentIcon = computed(() => {
+  return items.find((i) => i.value === value.value)?.icon
+})
+
 
 // Speichern bei Änderung
 watch(value, async (newVal) => {
-	console.log(newVal)
-	console.log(participationId.value)
   if (!participationId.value) return
 
   try {

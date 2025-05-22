@@ -19,7 +19,7 @@
         <div v-if="workshop.reward">
           <IconText :icon="HandCoins" :text="workshop.reward" />
         </div>
-        {{ workshop.workshop_serie.description.slice(0, 50) }}...
+        <!--{{ workshop.workshop_serie.description.slice(0, 50) }}...-->
       </UCard>
     </NuxtLink>
   </div>
