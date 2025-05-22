@@ -473,6 +473,41 @@ export interface ApiParticipationParticipation
   };
 }
 
+export interface ApiPersonalCodePersonalCode
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'personal_codes';
+  info: {
+    description: '';
+    displayName: 'PersonalCode';
+    pluralName: 'personal-codes';
+    singularName: 'personal-code';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    code: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::personal-code.personal-code'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    withdraw: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    workshop_group: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::workshop-group.workshop-group'
+    >;
+  };
+}
+
 export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   collectionName: 'projects';
   info: {
@@ -1172,6 +1207,7 @@ declare module '@strapi/strapi' {
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
       'api::message.message': ApiMessageMessage;
       'api::participation.participation': ApiParticipationParticipation;
+      'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
       'api::workshop-result.workshop-result': ApiWorkshopResultWorkshopResult;

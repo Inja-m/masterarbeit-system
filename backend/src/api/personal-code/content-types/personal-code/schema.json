@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "personal_codes",
+  "info": {
+    "singularName": "personal-code",
+    "pluralName": "personal-codes",
+    "displayName": "PersonalCode",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "code": {
+      "type": "string"
+    },
+    "workshop_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::workshop-group.workshop-group"
+    },
+    "withdraw": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

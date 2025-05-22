@@ -32,10 +32,11 @@
           :error="errors.code"
           @input="() => validate(state)"
         >
-          <UInput v-model="state.code" class="w-full " />
+          <UInput v-model="state.code" :disabled="verified" class="w-full" />
         </UFormField>
         <div class="flex justify-end my-6">
           <UButton
+						v-if="!verified"
             label="Code überprüfen"
             type="submit"
             class="flex justify-end"
@@ -99,12 +100,12 @@ const emit = defineEmits<{
   (e: 'update:open', value: boolean): void
 }>()
 
-const { findOne } = useStrapi()
+const { find, findOne, update } = useStrapi()
 
 const modalOpen = ref(props.open)
 const verified = ref(false)
 const showModal = ref(false)
-const submited = ref(false)
+const codeId = ref()
 
 const state = reactive({
   code: ''
@@ -141,15 +142,13 @@ const validate = async (state: any): Promise<FormError[]> => {
 }
 
 async function onSubmit(_event: FormSubmitEvent<typeof state>) {
-  // Beispielprüfung (normalerweise API)
-  submited.value = true
-  if (state.code === 'ABCD1234') {
+  const isValid = await validateCode(state.code)
+  if (isValid) {
     verified.value = true
     errors.code = undefined
   } else {
     verified.value = false
     errors.code = 'Code ungültig'
-    console.log('error')
   }
 }
 
@@ -162,15 +161,31 @@ async function onError(event: FormErrorEvent) {
   }
 }
 
+async function validateCode(code: string) {
+  const res = await find('personal-codes', {
+      filters: {
+        code: { $eq: code }
+      }
+  })
+	codeId.value = res.data[0].documentId
+  return res.data.length > 0
+}
 function confirmWithdraw() {
   showModal.value = true
 }
 
-function withdraw() {
-  // Hier: API-Aufruf zur Datenlöschung
-  // und alert für paar sekunden
+async function withdraw() {
+  try {
+    await update('personal-codes', codeId.value, {
+      withdraw: true
+    })
+
   showModal.value = false
   verified.value = false
   state.code = ''
+} catch (error) {
+    console.error('Fehler beim Setzen von withdraw:', error)
+  }
 }
+
 </script>
