@@ -93,7 +93,6 @@ const state = reactive({
 
 onMounted(() => {
   loadMessages()
-  console.log(workshopID)
 })
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {
   populate: { workshop_serie: { populate: '*' } }
@@ -155,7 +154,10 @@ const filteredResults = resWorkshopResults.data.map((result) => {
     console.log(component)
     return (
       component.__component === 'media.totality' &&
-      component.workshop_group?.documentId === userGroupId
+      (
+        !component.workshop_group || // keine Workshop-Gruppe zugewiesen
+        component.workshop_group.documentId === userGroupId
+      )
     )
   })
 
