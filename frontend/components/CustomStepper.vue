@@ -57,7 +57,7 @@
             {{
               steps[activeStep].evaluationStatus === 'done'
                 ? 'Abgeschlossen'
-                : steps[activeStep].evaluationStatus === 'in progress'
+                : steps[activeStep].evaluationStatus === 'inProgress'
                 ? 'In Bearbeitung'
                 : 'Ausstehend'
             }}
@@ -65,9 +65,13 @@
         </div>
       </template>
       <p>{{ steps[activeStep].description }}</p>
-      <div v-if="steps[activeStep].evaluationStatus === 'done'">
+      <div v-if="steps[activeStep].evaluationStatus === 'done'" class="mt-4">
         <Digitisation
           v-if="steps[activeStep].identifier === 'digitalisation'"
+          :result="steps[activeStep].result"
+        />
+				<Publication
+          v-if="steps[activeStep].identifier === 'publication'"
           :result="steps[activeStep].result"
         />
       </div>
@@ -78,6 +82,7 @@
 <script setup lang="ts">
 import * as LucideIcons from 'lucide-vue-next'
 import Digitisation from './evaluationStepResults/Digitisation.vue'
+import Publication from './evaluationStepResults/Publication.vue'
 
 const activeStep = ref(0)
 
@@ -100,7 +105,7 @@ function getStatusColor(status: string) {
   switch (status) {
     case 'done':
       return 'success'
-    case 'in progress':
+    case 'inProgress':
       return 'info'
     default:
       return 'warning'

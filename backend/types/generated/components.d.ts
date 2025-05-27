@@ -1,5 +1,15 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface MediaLink extends Struct.ComponentSchema {
+  collectionName: 'components_media_links';
+  info: {
+    displayName: 'Link';
+  };
+  attributes: {
+    link: Schema.Attribute.String;
+  };
+}
+
 export interface MediaPictures extends Struct.ComponentSchema {
   collectionName: 'components_media_pictures';
   info: {
@@ -9,6 +19,7 @@ export interface MediaPictures extends Struct.ComponentSchema {
   };
   attributes: {
     description: Schema.Attribute.String;
+    Link: Schema.Attribute.Component<'media.link', true>;
     pictures: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -47,6 +58,7 @@ export interface MediaTotality extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'media.link': MediaLink;
       'media.pictures': MediaPictures;
       'media.text': MediaText;
       'media.totality': MediaTotality;

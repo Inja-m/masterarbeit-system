@@ -596,7 +596,7 @@ export interface ApiWorkshopResultWorkshopResult
       'api::evaluation-step.evaluation-step'
     >;
     evaluationStatus: Schema.Attribute.Enumeration<
-      ['to do', 'in progress', 'done']
+      ['done', 'inProgress', 'todo']
     > &
       Schema.Attribute.DefaultTo<'to do'>;
     evaluator: Schema.Attribute.Relation<

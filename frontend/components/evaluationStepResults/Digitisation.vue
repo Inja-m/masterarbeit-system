@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasAnyPicture" class="mt-4">
+  <div v-if="hasAnyPicture">
     <h2>Die folgenden Materialien von dir wurden digitalisiert:</h2>
     <div v-for="res in result" :key="res.id">
       <ul class="list-disc list-inside my-4">

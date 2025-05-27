@@ -20,6 +20,12 @@
     },
     "description": {
       "type": "string"
+    },
+    "Link": {
+      "displayName": "Link",
+      "type": "component",
+      "repeatable": true,
+      "component": "media.link"
     }
   }
 }

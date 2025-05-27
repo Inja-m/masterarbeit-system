@@ -23,7 +23,7 @@
     </div>
     <UAccordion :items="items" />
     <div class="my-4 mx-2">
-      <CustomStepper :steps="stepsWithStatus" :completed-step="completedStep" />
+      <CustomStepper :steps="orderedSteps" :completed-step="completedStep" />
     </div>
   </Section>
   <Section bg-color="bg-primary-100" class="light text-default">
@@ -183,9 +183,11 @@ const stepsWithStatus = computed(() => {
 
 const orderedSteps = computed(() => {
   const order = { done: 0, inProgress: 1, todo: 2 }
-  return [...stepsWithStatus.value].sort(
-    (a, b) => order[a.evaluationStatus] - order[b.evaluationStatus]
-  )
+   return [...stepsWithStatus.value].sort((a, b) => {
+    const aStatus = a.evaluationStatus ?? 'todo'
+    const bStatus = b.evaluationStatus ?? 'todo'
+    return order[aStatus] - order[bStatus]
+  })
 })
 
 const completedStep = computed(() =>

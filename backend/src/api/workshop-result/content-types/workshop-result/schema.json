@@ -19,9 +19,9 @@
     "evaluationStatus": {
       "type": "enumeration",
       "enum": [
-        "to do",
-        "in progress",
-        "done"
+        "done",
+        "inProgress",
+        "todo"
       ],
       "default": "to do"
     },
