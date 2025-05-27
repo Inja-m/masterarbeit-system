@@ -8,6 +8,7 @@ export interface MediaPictures extends Struct.ComponentSchema {
     icon: 'picture';
   };
   attributes: {
+    description: Schema.Attribute.String;
     pictures: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true

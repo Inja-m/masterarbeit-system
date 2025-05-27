@@ -44,15 +44,42 @@
     </div>
 
     <!-- Content -->
-    <div class="bg-accented rounded-lg p-4">
-      <h2>{{ steps[activeStep].name }}</h2>
+    <UCard variant="soft">
+      <template #header>
+        <div class="flex items-center justify-between">
+          <h1>{{ activeStep + 1 }}. {{ steps[activeStep].name }}</h1>
+          <UBadge
+            :color="getStatusColor(steps[activeStep].evaluationStatus)"
+            variant="outline"
+            size="sm"
+            class="font-normal rounded-full whitespace-nowrap"
+          >
+            {{
+              steps[activeStep].evaluationStatus === 'done'
+                ? 'Abgeschlossen'
+                : steps[activeStep].evaluationStatus === 'in progress'
+                ? 'In Bearbeitung'
+                : 'Ausstehend'
+            }}
+          </UBadge>
+        </div>
+      </template>
       <p>{{ steps[activeStep].description }}</p>
-    </div>
+      <div v-if="steps[activeStep].evaluationStatus === 'done'">
+        <Digitisation
+          v-if="steps[activeStep].identifier === 'digitalisation'"
+          :result="steps[activeStep].result"
+        />
+      </div>
+    </UCard>
   </div>
 </template>
 
 <script setup lang="ts">
 import * as LucideIcons from 'lucide-vue-next'
+import Digitisation from './evaluationStepResults/Digitisation.vue'
+
+const activeStep = ref(0)
 
 const props = defineProps<{
   steps: { name: string; description: string; icon: string }[]
@@ -65,9 +92,18 @@ function getIconComponent(component: string) {
   )
 }
 
-const activeStep = ref(0)
-
 function setActive(index: number) {
   activeStep.value = index
+}
+
+function getStatusColor(status: string) {
+  switch (status) {
+    case 'done':
+      return 'success'
+    case 'in progress':
+      return 'info'
+    default:
+      return 'warning'
+  }
 }
 </script>

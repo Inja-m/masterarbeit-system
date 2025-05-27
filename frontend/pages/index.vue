@@ -11,7 +11,7 @@
             {{ workshop.workshop_serie.name }}
           </h1>
         </template>
-        <UBadge size="sm" :style="{ backgroundColor: workshop.workshop_serie.project.color}" class="mb-2" >{{
+        <UBadge size="sm" :style="{ backgroundColor: workshop.workshop_serie.project.color}" class="dark mb-2" >{{
           workshop.workshop_serie.project.name
         }}</UBadge>
         <IconText :icon="Calendar" :text="formatDate(workshop.date)" />
@@ -68,7 +68,7 @@ const fetchUserWorkshops = async () => {
             workshop: {
               populate: {
                 workshop_serie: {
-                  populate: ['project'] // Hier wird die Relation zu "project" aufgelöst
+                  populate: ['project'] 
                 }
               }
             }
@@ -78,8 +78,8 @@ const fetchUserWorkshops = async () => {
     })
     const allWorkshops = response.data
       .map((participation) => participation.workshop_group?.workshop)
-      .filter(Boolean) // Falls es null/undefined gibt
-
+      .filter(Boolean) 
+			
     // Doppelte anhand der ID entfernen
     const uniqueWorkshops = Array.from(
       new Map(allWorkshops.map((ws) => [ws.id, ws])).values()

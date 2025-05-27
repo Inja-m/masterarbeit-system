@@ -1,11 +1,18 @@
 <template>
   <Section>
-		<div class="flex items-center justify-between">
-    	<UBadge size="sm" :style="{ backgroundColor: resWorkshop.data.workshop_serie.project.color}">{{
-      	resWorkshop.data.workshop_serie.project.name
-    	}}</UBadge>
-		  <NotificationSetting :title="`Mitteilungen zu „${resWorkshop.data.workshop_serie.name}“ verwalten`"/>
-		 </div>
+    <div class="flex items-center justify-between">
+      <UBadge
+        size="sm"
+        :style="{
+          backgroundColor: resWorkshop.data.workshop_serie.project.color
+        }"
+        class="dark"
+        >{{ resWorkshop.data.workshop_serie.project.name }}</UBadge
+      >
+      <NotificationSetting
+        :title="`Mitteilungen zu „${resWorkshop.data.workshop_serie.name}“ verwalten`"
+      />
+    </div>
     <h1 class="py-2">
       {{ resWorkshop.data.workshop_serie.name }}
     </h1>
@@ -16,10 +23,7 @@
     </div>
     <UAccordion :items="items" />
     <div class="my-4 mx-2">
-      <CustomStepper
-        :steps="resWorkshop.data.workshop_serie.evaluation_steps"
-        :completed-step="completedStep"
-      />
+      <CustomStepper :steps="stepsWithStatus" :completed-step="completedStep" />
     </div>
   </Section>
   <Section bg-color="bg-primary-100" class="light text-default">
@@ -62,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { Calendar, MapPin, HandCoins} from 'lucide-vue-next'
+import { Calendar, MapPin, HandCoins } from 'lucide-vue-next'
 import type { Workshop } from '../../types/Workshop'
 import type { WorkshopResult } from '~/types/WorkshopResult'
 import type { Message } from '~/types/Message'
@@ -73,7 +77,7 @@ definePageMeta({
     title: 'Details',
     back: '/',
     showHeader: true
-  }	
+  }
 })
 
 const { findOne, find, create } = useStrapi()
@@ -89,7 +93,7 @@ const state = reactive({
 
 onMounted(() => {
   loadMessages()
-	console.log(workshopID)
+  console.log(workshopID)
 })
 const resWorkshop = await findOne<Workshop>('workshops', workshopID, {
   populate: { workshop_serie: { populate: '*' } }
@@ -109,17 +113,70 @@ const resWorkshopResults = await find<WorkshopResult>('workshop-results', {
       }
     }
   },
-  populate: ['evaluation_step']
+  populate: {
+    evaluation_step: true,
+    Result: {
+      on: {
+        'media.totality': { 
+					populate: { 
+						Pictures: { 
+							populate: '*' 
+						},
+						workshop_group: true, 
+            Text: true 
+					} 
+				}
+      }
+    }
+  }
 })
 
+const userParticipationRes = await find('participations', {
+  filters: {
+    user: {
+      id: { $eq: user.value.id }
+    }
+  },
+  populate: {
+    workshop_group: {
+      populate: ['workshop']
+    }
+  }
+})
+
+const userParticipation = userParticipationRes.data.find(
+  (p) => p.workshop_group?.workshop?.documentId === workshopID
+)
+
+const userGroupId = userParticipation.workshop_group.documentId
+
+const filteredResults = resWorkshopResults.data.map((result) => {
+  const filteredComponents = result.Result.filter((component) => {
+    console.log(component)
+    return (
+      component.__component === 'media.totality' &&
+      component.workshop_group?.documentId === userGroupId
+    )
+  })
+
+  return {
+    ...result,
+    Result: filteredComponents
+  }
+}).filter(result => result.Result.length > 0 || result.evaluationStatus !==  'to do' )
+
 const stepsWithStatus = computed(() => {
+  console.log(filteredResults)
+  console.log(userGroupId)
   return resWorkshop.data.workshop_serie.evaluation_steps.map((step: any) => {
-    const result = resWorkshopResults.data.find(
+    const result = filteredResults.find(
       (r: any) => r.evaluation_step.id === step.id
     )
+    console.log(result)
     return {
       ...step,
-      evaluationStatus: result?.evaluationStatus || 'todo' // fallback falls kein Ergebnis
+      evaluationStatus: result?.evaluationStatus,
+      result:  result?.Result
     }
   })
 })

@@ -19,6 +19,9 @@
     },
     "icon": {
       "type": "string"
+    },
+    "identifier": {
+      "type": "uid"
     }
   }
 }

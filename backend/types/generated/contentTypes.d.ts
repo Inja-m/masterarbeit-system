@@ -387,6 +387,7 @@ export interface ApiEvaluationStepEvaluationStep
       Schema.Attribute.Private;
     description: Schema.Attribute.Text;
     icon: Schema.Attribute.String;
+    identifier: Schema.Attribute.UID;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
