@@ -385,7 +385,7 @@ export interface ApiEvaluationStepEvaluationStep
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.Text;
+    description: Schema.Attribute.RichText;
     icon: Schema.Attribute.String;
     identifier: Schema.Attribute.UID;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
@@ -543,6 +543,38 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
+  collectionName: 'user_stories';
+  info: {
+    description: '';
+    displayName: 'User Story';
+    pluralName: 'user-stories';
+    singularName: 'user-story';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    benefit: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    goal: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-story.user-story'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    role: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
+  };
+}
+
 export interface ApiWorkshopGroupWorkshopGroup
   extends Struct.CollectionTypeSchema {
   collectionName: 'workshop_groups';
@@ -684,6 +716,10 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_stories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-story.user-story'
+    >;
     workshop_groups: Schema.Attribute.Relation<
       'oneToMany',
       'api::workshop-group.workshop-group'
@@ -1212,6 +1248,7 @@ declare module '@strapi/strapi' {
       'api::participation.participation': ApiParticipationParticipation;
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
+      'api::user-story.user-story': ApiUserStoryUserStory;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
       'api::workshop-result.workshop-result': ApiWorkshopResultWorkshopResult;
       'api::workshop-serie.workshop-serie': ApiWorkshopSerieWorkshopSerie;

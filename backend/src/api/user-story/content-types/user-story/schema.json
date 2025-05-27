@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_stories",
+  "info": {
+    "singularName": "user-story",
+    "pluralName": "user-stories",
+    "displayName": "User Story",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "role": {
+      "type": "string"
+    },
+    "goal": {
+      "type": "string"
+    },
+    "benefit": {
+      "type": "string"
+    },
+    "workshop": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::workshop.workshop",
+      "inversedBy": "user_stories"
+    }
+  }
+}

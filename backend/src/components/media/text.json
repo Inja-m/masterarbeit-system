@@ -2,12 +2,13 @@
   "collectionName": "components_media_texts",
   "info": {
     "displayName": "Text",
-    "icon": "layer"
+    "icon": "layer",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "text": {
-      "type": "text"
+      "type": "richtext"
     }
   }
 }

@@ -18,23 +18,25 @@ export interface MediaPictures extends Struct.ComponentSchema {
     icon: 'picture';
   };
   attributes: {
-    description: Schema.Attribute.String;
+    description: Schema.Attribute.RichText;
     Link: Schema.Attribute.Component<'media.link', true>;
     pictures: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
+    title: Schema.Attribute.String;
   };
 }
 
 export interface MediaText extends Struct.ComponentSchema {
   collectionName: 'components_media_texts';
   info: {
+    description: '';
     displayName: 'Text';
     icon: 'layer';
   };
   attributes: {
-    text: Schema.Attribute.Text;
+    text: Schema.Attribute.RichText;
   };
 }
 

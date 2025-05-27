@@ -40,6 +40,12 @@
       "relation": "oneToMany",
       "target": "api::workshop-result.workshop-result",
       "mappedBy": "workshop"
+    },
+    "user_stories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-story.user-story",
+      "mappedBy": "workshop"
     }
   }
 }

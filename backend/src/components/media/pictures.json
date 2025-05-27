@@ -18,7 +18,7 @@
         "audios"
       ]
     },
-    "description": {
+    "title": {
       "type": "string"
     },
     "Link": {
@@ -26,6 +26,9 @@
       "type": "component",
       "repeatable": true,
       "component": "media.link"
+    },
+    "description": {
+      "type": "richtext"
     }
   }
 }

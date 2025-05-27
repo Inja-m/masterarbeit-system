@@ -4,7 +4,7 @@
     <div v-for="res in result" :key="res.id">
       <ul class="list-disc list-inside my-4">
         <li v-for="pictureGroup in res.Pictures" :key="pictureGroup.id">
-          {{ pictureGroup.description }}
+          {{ pictureGroup.title }}
         </li>
       </ul>
     </div>
@@ -34,23 +34,24 @@
           :items="carouselItems"
           class="w-full max-w-xs mx-auto mb-6"
         >
-          <h2 class="flex justify-center">{{ item.description }}</h2>
-          <img :src="item.src" width="320" height="320" class="rounded-lg" />
+          <h2 class="flex justify-center">{{ item.title }}</h2>
+          <img :src="item.src" width="320" height="320" class="rounded-lg" >
+					<div v-html="parseMarkdown(item.description)" class="prose max-w-none mt-2" />
         </UCarousel>
       </template>
     </UModal>
   </div>
   <div v-if="hasAnyText">
-    <h2>Weiteres:</h2>
     <div v-for="res in result" :key="res.id" class="space-y-4">
       <div v-for="textgroup in res.Text" :key="textgroup.id">
-        <p>{{ textgroup.text }}</p>
+				<div v-html="parseMarkdown(textgroup.text)" class="prose max-w-none" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { parseMarkdown } from '@/utils/parseMarkdown'
 import { useImageUrl } from '@/composables/useImageUrl'
 const { getImageUrl } = useImageUrl()
 
@@ -80,7 +81,8 @@ const carouselItems = computed(() => {
         items.push({
           src: getImageUrl(image),
           alt: image.name || 'Bild',
-          description: pictureGroup.description || ''
+          title: pictureGroup.title || null,
+					description: pictureGroup.description || null,
         })
       }
     }

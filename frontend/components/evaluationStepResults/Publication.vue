@@ -43,21 +43,22 @@
             target="_blank"
           />
         </div>
+				<div v-html="parseMarkdown(item.description)" class="prose max-w-none mt-4" />
       </template>
     </UAccordion>
   </div>
 
   <div v-if="hasAnyText" class="mt-6">
-    <h2 class="text-xl font-semibold mb-2">Weiteres:</h2>
     <div v-for="res in result" :key="res.id" class="space-y-4">
       <div v-for="textgroup in res.Text" :key="textgroup.id">
-        <p>{{ textgroup.text }}</p>
+				<div v-html="parseMarkdown(textgroup.text)" class="prose max-w-none" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { parseMarkdown } from '@/utils/parseMarkdown'
 import { useImageUrl } from '@/composables/useImageUrl'
 const { getImageUrl } = useImageUrl()
 
@@ -75,9 +76,10 @@ const hasAnyText = computed(() =>
 const accordionItems = computed(() => {
   return props.result.flatMap((res) =>
     res.Pictures.map((picGroup) => ({
-      label: picGroup.description,
+      label: picGroup.title,
       pictures: picGroup.pictures,
-      links: picGroup.Link
+      links: picGroup.Link,
+			description: picGroup.description
     }))
   )
 })

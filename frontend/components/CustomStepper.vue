@@ -64,7 +64,7 @@
           </UBadge>
         </div>
       </template>
-      <p>{{ steps[activeStep].description }}</p>
+			<div v-html="parseMarkdown(steps[activeStep].description)" class="prose max-w-none" />
       <div v-if="steps[activeStep].evaluationStatus === 'done'" class="mt-4">
         <Digitisation
           v-if="steps[activeStep].identifier === 'digitalisation'"
@@ -74,6 +74,10 @@
           v-if="steps[activeStep].identifier === 'publication'"
           :result="steps[activeStep].result"
         />
+				<Qualitative
+          v-if="steps[activeStep].identifier === 'qualitative' && userStories.data && userStories.data.length > 0"
+          :result="userStories.data"
+        />
       </div>
     </UCard>
   </div>
@@ -81,8 +85,14 @@
 
 <script setup lang="ts">
 import * as LucideIcons from 'lucide-vue-next'
+import { parseMarkdown } from '@/utils/parseMarkdown'
 import Digitisation from './evaluationStepResults/Digitisation.vue'
 import Publication from './evaluationStepResults/Publication.vue'
+import Qualitative from './evaluationStepResults/Qualitative.vue'
+
+const {  find } = useStrapi()
+const route = useRoute()
+const workshopID = route.params.id as string
 
 const activeStep = ref(0)
 
@@ -111,4 +121,15 @@ function getStatusColor(status: string) {
       return 'warning'
   }
 }
+
+const userStories = await find('user-stories', {
+  filters: {
+    workshop: {
+      documentId: {
+        $eq: workshopID
+      }
+    }
+  },
+  populate: '*'
+	})
 </script>

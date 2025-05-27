@@ -2,7 +2,7 @@ export default defineAppConfig({
   ui: {
 		carousel: {
       slots: {
-				dots: '-bottom-6 gap-2',
+				dots: '-bottom-6 gap-',
 				dot: 'size-2'
 			}
 		},
