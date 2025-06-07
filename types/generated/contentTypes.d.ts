@@ -435,6 +435,40 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiNotificationNotification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'notifications';
+  info: {
+    displayName: 'Notification';
+    pluralName: 'notifications';
+    singularName: 'notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notification.notification'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop_groups: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-group.workshop-group'
+    >;
+  };
+}
+
 export interface ApiParticipationParticipation
   extends Struct.CollectionTypeSchema {
   collectionName: 'participations';
@@ -1282,6 +1316,7 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
       'api::message.message': ApiMessageMessage;
+      'api::notification.notification': ApiNotificationNotification;
       'api::participation.participation': ApiParticipationParticipation;
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;

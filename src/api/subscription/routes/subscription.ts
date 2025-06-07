@@ -1,20 +1,3 @@
-export default {
-  routes: [
-    {
-      method: 'POST',
-      path: '/subscribe',
-      handler: 'subscription.subscribe',
-      config: {
-        policies: [],
-      }
-    },
-    {
-      method: 'POST',
-      path: '/send',
-      handler: 'subscription.send',
-      config: {
-        policies: [],
-      }
-    },
-  ],
-};
+import { factories } from '@strapi/strapi';
+
+export default factories.createCoreRouter('api::subscription.subscription');
