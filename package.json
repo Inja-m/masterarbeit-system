@@ -22,7 +22,8 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.0.0",
-    "styled-components": "^6.0.0"
+    "styled-components": "^6.0.0",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -37,5 +38,5 @@
     "uuid": "df05d596-61ae-4a49-9cd7-385a82c3e496",
     "installId": "bb617acbe8837d1dc58092555d77abe0a32f1e3cf204d20891baa1ce897cc480"
   },
-"engineStrict": true
+  "engineStrict": true
 }
