@@ -614,6 +614,43 @@ export interface ApiSubscriptionSubscription
   };
 }
 
+export interface ApiUserNotificationUserNotification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_notifications';
+  info: {
+    displayName: 'User Notification';
+    pluralName: 'user-notifications';
+    singularName: 'user-notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-notification.user-notification'
+    > &
+      Schema.Attribute.Private;
+    notification: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::notification.notification'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    read: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
   collectionName: 'user_stories';
   info: {
@@ -1321,6 +1358,7 @@ declare module '@strapi/strapi' {
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::user-notification.user-notification': ApiUserNotificationUserNotification;
       'api::user-story.user-story': ApiUserStoryUserStory;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
       'api::workshop-result.workshop-result': ApiWorkshopResultWorkshopResult;

@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_notifications",
+  "info": {
+    "singularName": "user-notification",
+    "pluralName": "user-notifications",
+    "displayName": "User Notification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "read": {
+      "type": "boolean",
+      "default": false
+    },
+    "notification": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::notification.notification"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}
