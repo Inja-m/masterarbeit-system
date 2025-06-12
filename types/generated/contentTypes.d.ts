@@ -435,6 +435,40 @@ export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiNotificationNotification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'notifications';
+  info: {
+    displayName: 'Notification';
+    pluralName: 'notifications';
+    singularName: 'notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::notification.notification'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop_groups: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::workshop-group.workshop-group'
+    >;
+  };
+}
+
 export interface ApiParticipationParticipation
   extends Struct.CollectionTypeSchema {
   collectionName: 'participations';
@@ -539,6 +573,80 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     workshop_series: Schema.Attribute.Relation<
       'oneToMany',
       'api::workshop-serie.workshop-serie'
+    >;
+  };
+}
+
+export interface ApiSubscriptionSubscription
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'subscriptions';
+  info: {
+    displayName: 'Subscription';
+    pluralName: 'subscriptions';
+    singularName: 'subscription';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    endpoint: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    expirationTime: Schema.Attribute.Text;
+    keys: Schema.Attribute.JSON;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subscription.subscription'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiUserNotificationUserNotification
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_notifications';
+  info: {
+    displayName: 'User Notification';
+    pluralName: 'user-notifications';
+    singularName: 'user-notification';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-notification.user-notification'
+    > &
+      Schema.Attribute.Private;
+    notification: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::notification.notification'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    read: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
     >;
   };
 }
@@ -1245,9 +1353,12 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
       'api::message.message': ApiMessageMessage;
+      'api::notification.notification': ApiNotificationNotification;
       'api::participation.participation': ApiParticipationParticipation;
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
+      'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::user-notification.user-notification': ApiUserNotificationUserNotification;
       'api::user-story.user-story': ApiUserStoryUserStory;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;
       'api::workshop-result.workshop-result': ApiWorkshopResultWorkshopResult;
