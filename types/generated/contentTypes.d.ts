@@ -731,6 +731,7 @@ export interface ApiWorkshopResultWorkshopResult
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    estimatedCompletion: Schema.Attribute.Date;
     evaluation_step: Schema.Attribute.Relation<
       'oneToOne',
       'api::evaluation-step.evaluation-step'
@@ -785,6 +786,10 @@ export interface ApiWorkshopSerieWorkshopSerie
       'api::workshop-serie.workshop-serie'
     > &
       Schema.Attribute.Private;
+    material: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     name: Schema.Attribute.String;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
