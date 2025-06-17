@@ -46,6 +46,9 @@
       "relation": "oneToMany",
       "target": "api::user-story.user-story",
       "mappedBy": "workshop"
+    },
+    "personalCodeExample": {
+      "type": "richtext"
     }
   }
 }

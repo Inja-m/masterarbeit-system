@@ -824,6 +824,7 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
+    personalCodeExample: Schema.Attribute.RichText;
     publishedAt: Schema.Attribute.DateTime;
     reward: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
