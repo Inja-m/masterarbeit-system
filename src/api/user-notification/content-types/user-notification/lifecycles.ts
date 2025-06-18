@@ -1,5 +1,4 @@
 import webPush from 'web-push'
-import notification from '../../../notification/controllers/notification';
 
 export default {
   async afterCreate(event) {
@@ -26,7 +25,6 @@ export default {
 				notification: true 
 			}
 		})
-		console.log(subscriptions)
     if (subscriptions.length === 0) {
       console.log(
         'Keine Subscriptions gefunden, keine Push-Benachrichtigung versendet'
@@ -50,7 +48,6 @@ export default {
         try {
           const keys =
             typeof sub.keys === 'string' ? JSON.parse(sub.keys) : sub.keys
-          console.log('Sending push to:', sub.endpoint)
           await webPush.sendNotification(
             {
               endpoint: sub.endpoint,
@@ -68,6 +65,5 @@ export default {
         }
       })
     )
-
   }
 }

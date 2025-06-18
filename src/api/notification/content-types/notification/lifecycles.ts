@@ -12,7 +12,26 @@ export default {
 		})
 		console.log(notification)
 		const workshopGroupIds = notification.workshop_groups.map((wg) => wg.documentId)
-		let participations = []
+		let participations = await strapi.db
+			.query('api::participation.participation')
+			.findMany({
+				where: {
+					publishedAt:{
+						$ne: null
+					},
+					workshop_group: {
+						documentId: {
+							$in: workshopGroupIds
+						}
+					},
+					 notification: {
+						$ne: 'off'
+					}
+				},
+				populate: {
+					user: true
+				}
+			})
 		if(notification.title === 'Neuer Kommentar' ){
 			participations = await strapi.db
 			.query('api::participation.participation')
