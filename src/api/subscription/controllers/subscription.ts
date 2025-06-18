@@ -3,12 +3,10 @@ import webPush from 'web-push';
 
 export default factories.createCoreController('api::subscription.subscription', ({ strapi }) => ({
   async subscribe(ctx) {
-		console.log('Request body:', ctx.request.body)
 
     const { endpoint, expirationTime, keys } = ctx.request.body;
     const user = ctx.state.user;
 
-		console.log(keys?.p256dh)
     // Prüfen, ob diese Subscription für den Benutzer bereits existiert
     const existing = await strapi.entityService.findMany('api::subscription.subscription', {
       filters: {

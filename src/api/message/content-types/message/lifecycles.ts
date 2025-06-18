@@ -1,6 +1,5 @@
 export default {
   async afterCreate(event) {	
-		console.log(event)
 		if(event.result.publishedAt === null) return
 		 const message = await strapi.db
   .query('api::message.message')
@@ -12,7 +11,6 @@ export default {
     }}
     }
   })
-    console.log(message.workshop.workshop_groups)
 
      // Notification anlegen
 		  try {
@@ -27,6 +25,6 @@ export default {
 } catch (err) {
       console.error('Fehler beim Erstellen der Notification:', err)
     }
-    console.log('Notification erstellt')
+
   }
 }

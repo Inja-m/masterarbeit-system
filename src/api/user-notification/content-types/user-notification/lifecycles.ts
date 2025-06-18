@@ -2,7 +2,6 @@ import webPush from 'web-push'
 
 export default {
   async afterCreate(event) {
-		console.log('⚡ User Notification afterCreate ausgelöst:', event.result);
 		if(event.result.publishedAt === null) return
 
 		const userNotification = await strapi.db
@@ -14,7 +13,6 @@ export default {
 				notification: true 
 			}
 		})
-		console.log(userNotification)
 
 		const subscriptions  = await strapi.db
 		.query('api::subscription.subscription')
@@ -25,12 +23,8 @@ export default {
 				notification: true 
 			}
 		})
-    if (subscriptions.length === 0) {
-      console.log(
-        'Keine Subscriptions gefunden, keine Push-Benachrichtigung versendet'
-      )
-      return
-    }
+    if (subscriptions.length === 0) return
+		
     const payload = JSON.stringify({
       title: userNotification.notification.title || 'Neue Nachricht',
       body: userNotification.notification.message || '',
@@ -59,7 +53,6 @@ export default {
             },
             payload
           )
-          console.log('Push sent successfully')
         } catch (err) {
           console.error('Fehler beim Senden der Notification:', err)
         }

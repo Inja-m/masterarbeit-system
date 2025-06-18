@@ -1,6 +1,5 @@
 export default {
   async afterCreate(event) {
-		console.log('⚡ Notification afterCreate ausgelöst:', event.result.title)
 		if(event.result.publishedAt === null) return
 		const notification = await strapi.db
 		.query('api::notification.notification')
@@ -10,7 +9,7 @@ export default {
 				workshop_groups: true
 			}
 		})
-		console.log(notification)
+
 		const workshopGroupIds = notification.workshop_groups.map((wg) => wg.documentId)
 		let participations = await strapi.db
 			.query('api::participation.participation')
@@ -52,15 +51,13 @@ export default {
 				}
 			})
 		}
-		console.log(participations)
+
+		
 		const userIds = participations
       .map((p) => (p as any).user?.id)
       .filter(Boolean)
-		if (userIds.length === 0) {
-			console.log('Keine Nutzer mit Notifications gefunden, breche ab.')
-			return
-		}
-		console.log(userIds)
+		if (userIds.length === 0) return
+
 		await Promise.all(
 			userIds.map((userId) =>
 				strapi.service('api::user-notification.user-notification').create({
