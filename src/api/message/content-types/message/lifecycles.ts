@@ -3,6 +3,7 @@ import { notDeepEqual } from "assert"
 export default {
   async afterCreate(event) {	
 		if(event.result.publishedAt === null) return
+		if (event.result.createdAt !== event.result.updatedAt) return
 		const message = await strapi.db
   .query('api::message.message')
   .findOne({

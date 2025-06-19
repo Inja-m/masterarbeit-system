@@ -64,7 +64,6 @@ if (authorId) {
   });
 		}
 
-		
 		const userIds = participations
       .map((p) => (p as any).user?.id)
       .filter(Boolean)
