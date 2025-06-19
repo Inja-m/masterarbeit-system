@@ -9,7 +9,6 @@ export default {
 				workshop_groups: true
 			}
 		})
-
 		const workshopGroupIds = notification.workshop_groups.map((wg) => wg.documentId)
 		let participations = await strapi.db
 			.query('api::participation.participation')
@@ -32,24 +31,37 @@ export default {
 				}
 			})
 		if(notification.title === 'Neuer Kommentar' ){
-			participations = await strapi.db
-			.query('api::participation.participation')
-			.findMany({
-				where: {
-					publishedAt:{
-						$ne: null
-					},
-					workshop_group: {
-						documentId: {
-							$in: workshopGroupIds
-						}
-					},
-					notification: 'all'
-				},
-				populate: {
-					user: true
-				}
+			const relatedMessage = await strapi.db
+			.query('api::message.message')
+			.findOne({
+				where: { documentId: notification.documentId },
+				populate: { author: true },
 			})
+			const authorId = relatedMessage?.author?.id
+
+		
+const where: any = {
+  publishedAt: { $ne: null },
+  workshop_group: {
+    documentId: { $in: workshopGroupIds }
+  },
+  notification: 'all'
+};
+
+if (authorId) {
+  where.user = {
+    id: { $ne: authorId }
+  };
+}
+
+ participations = await strapi.db
+  .query('api::participation.participation')
+  .findMany({
+    where,
+    populate: {
+      user: true
+    }
+  });
 		}
 
 		
