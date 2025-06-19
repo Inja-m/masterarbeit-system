@@ -24,11 +24,15 @@ export default {
 			}
 		})
     if (subscriptions.length === 0) return
-		
+
     const payload = JSON.stringify({
       title: userNotification.notification.title || 'Neue Nachricht',
       body: userNotification.notification.message || '',
-      icon: process.env.FRONTEND_URL + '/public/icons/icon_192x192.png'
+      icon: process.env.FRONTEND_URL + '/public/icons/icon_192x192.png',
+			data: {
+				url: `${process.env.FRONTEND_URL}/notifications` 
+			}
+
     })
 
     webPush.setVapidDetails(

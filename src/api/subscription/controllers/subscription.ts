@@ -38,12 +38,12 @@ export default factories.createCoreController('api::subscription.subscription', 
     return ctx.unauthorized('User not authenticated');
   }
 
-  const { title, body, url } = ctx.request.body;
+  const { title, body} = ctx.request.body;
 
   const payload = JSON.stringify({
     title: title || 'Push Nachricht',
     body: body || 'Dies ist eine Benachrichtigung',
-    data: { url: url || '/' },
+    data: { url:  `${process.env.FRONTEND_URL}/notifications`},
   });
 
   const subscriptions = await strapi.entityService.findMany('api::subscription.subscription', {
