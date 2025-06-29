@@ -492,7 +492,7 @@ export interface ApiParticipationParticipation
     > &
       Schema.Attribute.Private;
     notification: Schema.Attribute.Enumeration<['all', 'relevant', 'off']> &
-      Schema.Attribute.DefaultTo<'all'>;
+      Schema.Attribute.DefaultTo<'off'>;
     publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &

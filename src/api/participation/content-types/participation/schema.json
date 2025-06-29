@@ -28,7 +28,7 @@
         "relevant",
         "off"
       ],
-      "default": "all"
+      "default": "off"
     }
   }
 }
