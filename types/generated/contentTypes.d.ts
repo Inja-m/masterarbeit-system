@@ -402,6 +402,40 @@ export interface ApiEvaluationStepEvaluationStep
   };
 }
 
+export interface ApiLocationLocation extends Struct.CollectionTypeSchema {
+  collectionName: 'locations';
+  info: {
+    description: '';
+    displayName: 'Location';
+    pluralName: 'locations';
+    singularName: 'location';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    directions: Schema.Attribute.Text;
+    floorPlan: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::location.location'
+    > &
+      Schema.Attribute.Private;
+    maps: Schema.Attribute.String;
+    material: Schema.Attribute.RichText;
+    name: Schema.Attribute.String;
+    personNumber: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
   collectionName: 'messages';
   info: {
@@ -747,6 +781,7 @@ export interface ApiWorkshopGroupWorkshopGroup
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
+    Workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
   };
 }
 
@@ -859,7 +894,7 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
       'api::workshop.workshop'
     > &
       Schema.Attribute.Private;
-    location: Schema.Attribute.String;
+    location: Schema.Attribute.Relation<'oneToOne', 'api::location.location'>;
     personalCodeExample: Schema.Attribute.RichText;
     publishedAt: Schema.Attribute.DateTime;
     reward: Schema.Attribute.String;
@@ -1398,6 +1433,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
+      'api::location.location': ApiLocationLocation;
       'api::message.message': ApiMessageMessage;
       'api::notification.notification': ApiNotificationNotification;
       'api::participation.participation': ApiParticipationParticipation;

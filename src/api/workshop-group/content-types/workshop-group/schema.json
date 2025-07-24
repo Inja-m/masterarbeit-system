@@ -17,7 +17,13 @@
     "numberParticipants": {
       "type": "integer"
     },
-		"workshop": {
+    "workshop": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::workshop.workshop",
+      "inversedBy": "workshop_groups"
+    },
+    "Workshop": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::workshop.workshop",

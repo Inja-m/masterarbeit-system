@@ -42,7 +42,7 @@
       "target": "api::workshop.workshop",
       "inversedBy": "workshop_results"
     },
-		"estimatedCompletion": {
+    "estimatedCompletion": {
       "type": "date"
     }
   }
