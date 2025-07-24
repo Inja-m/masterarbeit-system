@@ -614,6 +614,41 @@ export interface ApiSubscriptionSubscription
   };
 }
 
+export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
+  collectionName: 'teams';
+  info: {
+    description: '';
+    displayName: 'Team';
+    pluralName: 'teams';
+    singularName: 'team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::team.team'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    team_member: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop_serie: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::workshop-serie.workshop-serie'
+    >;
+    workshopRole: Schema.Attribute.String;
+  };
+}
+
 export interface ApiUserNotificationUserNotification
   extends Struct.CollectionTypeSchema {
   collectionName: 'user_notifications';
@@ -793,6 +828,7 @@ export interface ApiWorkshopSerieWorkshopSerie
     name: Schema.Attribute.String;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
+    teams: Schema.Attribute.Relation<'oneToMany', 'api::team.team'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1328,6 +1364,10 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    phone: Schema.Attribute.String;
+    profilepicture: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1364,6 +1404,7 @@ declare module '@strapi/strapi' {
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::team.team': ApiTeamTeam;
       'api::user-notification.user-notification': ApiUserNotificationUserNotification;
       'api::user-story.user-story': ApiUserStoryUserStory;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;

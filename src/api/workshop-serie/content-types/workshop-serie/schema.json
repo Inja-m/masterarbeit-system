@@ -44,6 +44,12 @@
         "videos",
         "audios"
       ]
+    },
+    "teams": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::team.team",
+      "mappedBy": "workshop_serie"
     }
   }
 }

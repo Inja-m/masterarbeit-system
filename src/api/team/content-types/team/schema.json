@@ -1,0 +1,32 @@
+{
+  "kind": "collectionType",
+  "collectionName": "teams",
+  "info": {
+    "singularName": "team",
+    "pluralName": "teams",
+    "displayName": "Team",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "description": {
+      "type": "text"
+    },
+    "workshop_serie": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::workshop-serie.workshop-serie",
+      "inversedBy": "teams"
+    },
+    "team_member": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "workshopRole": {
+      "type": "string"
+    }
+  }
+}

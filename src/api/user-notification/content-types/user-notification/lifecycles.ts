@@ -37,7 +37,7 @@ export default {
     })
 
     webPush.setVapidDetails(
-      'mailto:test@example.com',
+      'mailto:inja@mainhardts.de',
       process.env.VAPID_PUBLIC_KEY,
       process.env.VAPID_PRIVATE_KEY
     )
