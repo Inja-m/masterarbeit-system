@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_media_contexts",
+  "info": {
+    "displayName": "Context",
+    "icon": "bulletList"
+  },
+  "options": {},
+  "attributes": {
+    "link": {
+      "type": "component",
+      "repeatable": true,
+      "component": "media.link"
+    },
+    "text": {
+      "type": "component",
+      "repeatable": true,
+      "component": "media.text"
+    }
+  }
+}

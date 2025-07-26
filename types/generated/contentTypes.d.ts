@@ -736,6 +736,10 @@ export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    developmentStatus: Schema.Attribute.Enumeration<
+      ['todo', 'inProgress', 'done']
+    > &
+      Schema.Attribute.DefaultTo<'todo'>;
     goal: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -744,6 +748,7 @@ export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    result: Schema.Attribute.Component<'media.pictures', false>;
     role: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -821,7 +826,7 @@ export interface ApiWorkshopResultWorkshopResult
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Result: Schema.Attribute.DynamicZone<['media.totality']>;
+    Result: Schema.Attribute.DynamicZone<['media.totality', 'media.research']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

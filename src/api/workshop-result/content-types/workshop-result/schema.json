@@ -33,7 +33,8 @@
     "Result": {
       "type": "dynamiczone",
       "components": [
-        "media.totality"
+        "media.totality",
+				"media.research"
       ]
     },
     "workshop": {
