@@ -23,7 +23,7 @@
         "inProgress",
         "todo"
       ],
-      "default": "to do"
+      "default": "todo"
     },
     "evaluation_step": {
       "type": "relation",

@@ -786,7 +786,6 @@ export interface ApiWorkshopGroupWorkshopGroup
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
-    Workshop: Schema.Attribute.Relation<'manyToOne', 'api::workshop.workshop'>;
   };
 }
 
@@ -814,7 +813,7 @@ export interface ApiWorkshopResultWorkshopResult
     evaluationStatus: Schema.Attribute.Enumeration<
       ['done', 'inProgress', 'todo']
     > &
-      Schema.Attribute.DefaultTo<'to do'>;
+      Schema.Attribute.DefaultTo<'todo'>;
     evaluator: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::users-permissions.user'
