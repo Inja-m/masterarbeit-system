@@ -15,9 +15,11 @@ export interface MediaContext extends Struct.ComponentSchema {
 export interface MediaLink extends Struct.ComponentSchema {
   collectionName: 'components_media_links';
   info: {
+    description: '';
     displayName: 'Link';
   };
   attributes: {
+    label: Schema.Attribute.String;
     link: Schema.Attribute.String;
   };
 }

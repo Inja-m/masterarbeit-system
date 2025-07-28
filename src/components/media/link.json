@@ -1,11 +1,15 @@
 {
   "collectionName": "components_media_links",
   "info": {
-    "displayName": "Link"
+    "displayName": "Link",
+    "description": ""
   },
   "options": {},
   "attributes": {
     "link": {
+      "type": "string"
+    },
+    "label": {
       "type": "string"
     }
   }
