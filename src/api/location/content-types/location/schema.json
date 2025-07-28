@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "locations",
+  "info": {
+    "singularName": "location",
+    "pluralName": "locations",
+    "displayName": "Location",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "floorPlan": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "maps": {
+      "type": "string"
+    },
+    "personNumber": {
+      "type": "integer"
+    },
+    "material": {
+      "type": "richtext"
+    },
+    "directions": {
+      "type": "text"
+    }
+  }
+}

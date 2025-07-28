@@ -39,29 +39,29 @@ export default {
 			})
 			const authorId = relatedMessage?.author?.id
 
-		
-const where: any = {
-  publishedAt: { $ne: null },
-  workshop_group: {
-    documentId: { $in: workshopGroupIds }
-  },
-  notification: 'all'
-};
+					
+			const where: any = {
+				publishedAt: { $ne: null },
+				workshop_group: {
+					documentId: { $in: workshopGroupIds }
+				},
+				notification: 'all'
+			};
 
-if (authorId) {
-  where.user = {
-    id: { $ne: authorId }
-  };
-}
+			if (authorId) {
+				where.user = {
+					id: { $ne: authorId }
+				};
+			}
 
- participations = await strapi.db
-  .query('api::participation.participation')
-  .findMany({
-    where,
-    populate: {
-      user: true
-    }
-  });
+			participations = await strapi.db
+				.query('api::participation.participation')
+				.findMany({
+					where,
+					populate: {
+						user: true
+					}
+				});
 		}
 
 		const userIds = participations

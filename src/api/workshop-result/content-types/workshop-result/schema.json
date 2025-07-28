@@ -23,7 +23,7 @@
         "inProgress",
         "todo"
       ],
-      "default": "to do"
+      "default": "todo"
     },
     "evaluation_step": {
       "type": "relation",
@@ -33,7 +33,8 @@
     "Result": {
       "type": "dynamiczone",
       "components": [
-        "media.totality"
+        "media.totality",
+				"media.research"
       ]
     },
     "workshop": {
@@ -42,7 +43,7 @@
       "target": "api::workshop.workshop",
       "inversedBy": "workshop_results"
     },
-		"estimatedCompletion": {
+    "estimatedCompletion": {
       "type": "date"
     }
   }

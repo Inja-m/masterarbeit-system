@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_media_research",
+  "info": {
+    "displayName": "Research",
+    "icon": "discuss",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "researchQuestion": {
+      "displayName": "Research Question",
+      "type": "component",
+      "repeatable": true,
+      "component": "media.research-question"
+    },
+    "disscussion": {
+      "type": "richtext"
+    },
+    "abstract": {
+      "type": "richtext"
+    },
+    "results": {
+      "type": "richtext"
+    },
+    "bibliography": {
+      "type": "json"
+    },
+    "researchDesign": {
+      "type": "component",
+      "repeatable": false,
+      "component": "media.picture"
+    },
+    "context": {
+      "displayName": "Context",
+      "type": "component",
+      "repeatable": false,
+      "component": "media.context"
+    }
+  }
+}

@@ -402,6 +402,40 @@ export interface ApiEvaluationStepEvaluationStep
   };
 }
 
+export interface ApiLocationLocation extends Struct.CollectionTypeSchema {
+  collectionName: 'locations';
+  info: {
+    description: '';
+    displayName: 'Location';
+    pluralName: 'locations';
+    singularName: 'location';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    directions: Schema.Attribute.Text;
+    floorPlan: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::location.location'
+    > &
+      Schema.Attribute.Private;
+    maps: Schema.Attribute.String;
+    material: Schema.Attribute.RichText;
+    name: Schema.Attribute.String;
+    personNumber: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMessageMessage extends Struct.CollectionTypeSchema {
   collectionName: 'messages';
   info: {
@@ -614,6 +648,41 @@ export interface ApiSubscriptionSubscription
   };
 }
 
+export interface ApiTeamTeam extends Struct.CollectionTypeSchema {
+  collectionName: 'teams';
+  info: {
+    description: '';
+    displayName: 'Team';
+    pluralName: 'teams';
+    singularName: 'team';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::team.team'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    team_member: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    workshop_serie: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::workshop-serie.workshop-serie'
+    >;
+    workshopRole: Schema.Attribute.String;
+  };
+}
+
 export interface ApiUserNotificationUserNotification
   extends Struct.CollectionTypeSchema {
   collectionName: 'user_notifications';
@@ -667,6 +736,10 @@ export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    developmentStatus: Schema.Attribute.Enumeration<
+      ['todo', 'inProgress', 'done']
+    > &
+      Schema.Attribute.DefaultTo<'todo'>;
     goal: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -675,6 +748,7 @@ export interface ApiUserStoryUserStory extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    result: Schema.Attribute.Component<'media.pictures', false>;
     role: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -739,7 +813,7 @@ export interface ApiWorkshopResultWorkshopResult
     evaluationStatus: Schema.Attribute.Enumeration<
       ['done', 'inProgress', 'todo']
     > &
-      Schema.Attribute.DefaultTo<'to do'>;
+      Schema.Attribute.DefaultTo<'todo'>;
     evaluator: Schema.Attribute.Relation<
       'oneToOne',
       'plugin::users-permissions.user'
@@ -751,7 +825,7 @@ export interface ApiWorkshopResultWorkshopResult
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    Result: Schema.Attribute.DynamicZone<['media.totality']>;
+    Result: Schema.Attribute.DynamicZone<['media.totality', 'media.research']>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -793,6 +867,7 @@ export interface ApiWorkshopSerieWorkshopSerie
     name: Schema.Attribute.String;
     project: Schema.Attribute.Relation<'manyToOne', 'api::project.project'>;
     publishedAt: Schema.Attribute.DateTime;
+    teams: Schema.Attribute.Relation<'oneToMany', 'api::team.team'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -823,7 +898,7 @@ export interface ApiWorkshopWorkshop extends Struct.CollectionTypeSchema {
       'api::workshop.workshop'
     > &
       Schema.Attribute.Private;
-    location: Schema.Attribute.String;
+    location: Schema.Attribute.Relation<'oneToOne', 'api::location.location'>;
     personalCodeExample: Schema.Attribute.RichText;
     publishedAt: Schema.Attribute.DateTime;
     reward: Schema.Attribute.String;
@@ -1328,6 +1403,10 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
+    phone: Schema.Attribute.String;
+    profilepicture: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
@@ -1358,12 +1437,14 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::evaluation-step.evaluation-step': ApiEvaluationStepEvaluationStep;
+      'api::location.location': ApiLocationLocation;
       'api::message.message': ApiMessageMessage;
       'api::notification.notification': ApiNotificationNotification;
       'api::participation.participation': ApiParticipationParticipation;
       'api::personal-code.personal-code': ApiPersonalCodePersonalCode;
       'api::project.project': ApiProjectProject;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::team.team': ApiTeamTeam;
       'api::user-notification.user-notification': ApiUserNotificationUserNotification;
       'api::user-story.user-story': ApiUserStoryUserStory;
       'api::workshop-group.workshop-group': ApiWorkshopGroupWorkshopGroup;

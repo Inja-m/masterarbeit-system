@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_media_subquestions",
+  "info": {
+    "displayName": "subquestion",
+    "icon": "question"
+  },
+  "options": {},
+  "attributes": {
+    "subquestion": {
+      "type": "text"
+    }
+  }
+}

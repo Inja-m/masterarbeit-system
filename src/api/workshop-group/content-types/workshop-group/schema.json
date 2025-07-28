@@ -17,7 +17,7 @@
     "numberParticipants": {
       "type": "integer"
     },
-		"workshop": {
+    "workshop": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::workshop.workshop",

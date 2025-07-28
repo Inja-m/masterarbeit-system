@@ -25,6 +25,20 @@
       "relation": "manyToOne",
       "target": "api::workshop.workshop",
       "inversedBy": "user_stories"
+    },
+    "developmentStatus": {
+      "type": "enumeration",
+      "enum": [
+        "todo",
+        "inProgress",
+        "done"
+      ],
+      "default": "todo"
+    },
+    "result": {
+      "type": "component",
+      "repeatable": false,
+      "component": "media.pictures"
     }
   }
 }
